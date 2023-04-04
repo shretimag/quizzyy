@@ -121,6 +121,6 @@
 }
 firebase.auth().onAuthStateChanged((user)=>{
   if (user){
-    location.replace("/homepage/homepage.html")
+    location.replace("homepage.html")
   }
 })
