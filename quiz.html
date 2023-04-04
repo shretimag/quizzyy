@@ -1,0 +1,294 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Quiz</title>
+		<link rel="stylesheet" href="quiz.css">
+	</head>
+	<body>
+
+			<div class="container" id="container">
+				<div class="bar">
+					<div class="quesnumber">
+					</div>
+					<span class="timer" id="timer"></span>
+				</div>
+				<div class="innercontainer">
+					<div class="ques">
+						<div class="queshere"><a class="qwe">Question :</a><span id="ques">Default Question</span> </div>
+					</div>
+					<div class="options">
+						
+							<ul>
+								<li><input type="radio" class="op" id="op1" name="option">
+									<label class="opvalue" for="op1" id="options1">option1 </label>
+								</li>
+								<li><input type="radio" class="op" id="op2" name="option">
+									<label class="opvalue" for="op2" id="options2">option2 </label>
+								</li>
+								<li><input type="radio" class="op" id="op3" name="option">
+									<label class="opvalue" for="op3" id="options3">option3 </label>
+								</li>
+								<li><input type="radio" class="op" id="op4" name="option">
+									<label class="opvalue" for="op4" id="options4">option4 </label>
+								</li>
+							</ul>
+						
+					</div>
+					
+					<div class="buttonsreq">
+						<button class="viewscore" id="viewscore">viewscore</button>
+		
+						<button class="next" id="next">Next</button>
+						<button class="prev" id="prev">prev</button>
+						
+					</div>
+					
+				</div>
+			</div>
+			
+			<div class="d"></div>
+			
+			<div class="scoring" id="scoring">
+				<div class="viewscoree" id="viewscoree"><a href = '#'>VIEW SCORE</a></div>
+				<div id="de" class="de"></div>
+				<button class="piechart" id= "piechart">view piechart</button>
+				<canvas id="chart"></canvas>
+				<ul id="legend"></ul>
+				<button class="piechart"><a href=scoreboard.html>see scoreboard</a></button>
+				<button class="piechart"><a href=score.html>see answers</a></button>
+			</div>
+
+			
+		
+<script type="module">
+			// Import the functions you need from the SDKs you need
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+			import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+			// TODO: Add SDKs for Firebase products that you want to use
+			// https://firebase.google.com/docs/web/setup#available-libraries
+		
+			// Your web app's Firebase configuration
+			const firebaseConfig = {
+				apiKey: "AIzaSyDjxpbAlo9Qu2aN2sTiWPzOkl_AbBmFgX0",
+      authDomain: "sample-f74a3.firebaseapp.com",
+      databaseURL: "https://sample-f74a3-default-rtdb.firebaseio.com",
+      projectId: "sample-f74a3",
+      storageBucket: "sample-f74a3.appspot.com",
+      messagingSenderId: "73794391459",
+      appId: "1:73794391459:web:2858929dc11882654d1e16"
+			};
+		
+			// Initialize Firebase
+			const app = initializeApp(firebaseConfig);
+			const db = getFirestore();
+			const colRef = collection(db, 'quiz');
+			const rowRef = collection(db, 'score')
+	var i=0;
+    var score = 0;
+	var incorrect=0;
+	var unattempted=0;
+    var demovariable;
+    var book = [];
+	document.getElementById('prev').hidden=true;
+	
+
+	
+   ///getting documne tin array 
+    getDocs(colRef)
+        .then((snapshot) => {
+
+            snapshot.docs.forEach((doc) => {
+                book.push({ ...doc.data(), id: doc.id })
+            })
+            console.log(book)
+
+            displayquestion(0);
+        }
+        )
+		document.getElementById('viewscore').hidden=true;
+		document.getElementById('scoring').hidden=true;
+    function displayquestion(i) {
+		if (i<book.length){
+		sec=15;
+        //document.getElementById('displayquesnumber').innerHTML = i + 1;
+        var quesnum = book[i];
+
+        var quesvalue = quesnum.question;
+        document.getElementById('ques').innerHTML = quesvalue;
+		var v1 = quesnum.option1;
+        document.getElementById('options1').innerHTML = v1;
+        document.getElementById('op1').value = v1;
+		document.getElementById('op1').checked= false;
+		var v2 = quesnum.option2;
+        document.getElementById('options2').innerHTML = v2;
+        document.getElementById('op2').value = v2;
+		document.getElementById('op2').checked= false;
+		var v3 = quesnum.option3;
+        document.getElementById('options3').innerHTML = v3;
+        document.getElementById('op3').value = v3;
+		document.getElementById('op3').checked= false;
+		 var v4 = quesnum.option4;
+        document.getElementById('options4').innerHTML = v4;
+        document.getElementById('op4').value = v4;
+		document.getElementById('op4').checked= false;
+		var answernum = quesnum.answer;
+        document.getElementsByClassName('d').innerHTML = answernum;}
+	
+		else{
+			clearall();
+		}
+		
+		//updatecountdown();
+    }
+    //onclick
+	function clearall(){
+		clearInterval(time);
+					document.getElementById('next').hidden= true;
+					document.getElementById('viewscore').hidden= false;
+					document.getElementById('prev').hidden= true;
+
+                    var nameuser = prompt('enter your name');
+                    addDoc(rowRef, {
+                        name: nameuser,
+                        value:score
+                    })
+
+	}
+	document.getElementById('prev').addEventListener("click", function checkButton() {
+		i--;
+		displayquestion(i);
+	})
+    document.getElementById('next').addEventListener("click", function checkButton() {
+		document.getElementById('prev').hidden=false;
+        var answernumb = document.getElementsByClassName('d').innerHTML;
+        var radioButtonGroup = document.getElementsByName("option");
+        var checkedRadio = Array.from(radioButtonGroup).find(
+            (radio) => radio.checked
+        );
+		if (checkedRadio != null) {
+        var realans = (checkedRadio.value);
+            if (realans == answernumb) {
+                i++;
+                score++;
+
+                if (i <= book.length-1) {
+                    displayquestion(i)
+                }
+                else {
+					clearall()
+
+                }
+            }
+            else {
+                incorrect++;
+                i++;
+                if (i <= book.length-1) {
+                    displayquestion(i)
+                }
+                else {
+					clearall();
+                }
+            }
+        }
+		else{
+			alert("please make a selection!");
+		}
+    }) 
+
+var sec = 15;
+var time = setInterval(myTimer, 1000);
+function myTimer() {
+    sec--;
+    while (sec == -1) {
+		i++;
+		unattempted++;
+        displayquestion(i);
+        sec=15;}
+	let x = (sec * 100) / 15;
+
+      timer.style.width = x + "%";
+}
+	document.getElementById('viewscore').addEventListener("click", function checkButton() { 
+		document.getElementById('container').hidden=true;
+		document.getElementById('scoring').hidden=false;
+		document.getElementById('viewscoree').innerHTML = "your score is "+ (score/(book.length))*100 + "%";
+
+
+	}) 
+	document.getElementById('piechart').addEventListener("click", function checkButton(){
+		getcanvas()
+	})
+	function getcanvas(){
+  // Set up chart data
+var data = [score, incorrect, unattempted];
+
+// Set up chart colors
+var colors = ["blue", "red", "grey"];
+
+// Set up chart labels
+var labels = ["correct answers", "incorrect answers", "unattempted"];
+
+// Get canvas element
+var canvas = document.getElementById("chart");
+var context = canvas.getContext("2d");
+
+// Set up chart dimensions
+var chartWidth = canvas.width;
+var chartHeight = canvas.height;
+var chartRadius = Math.min(chartWidth, chartHeight) / 2;
+var center = {
+	x: chartWidth / 2,
+	y: chartHeight / 2
+};
+
+// Set up legend element
+var legend = document.getElementById("legend");
+
+// Calculate total data value
+var total = 0;
+for (var i = 0; i < data.length; i++) {
+	total += data[i];
+}
+
+// Set up starting point
+var startAngle = -Math.PI / 2;
+
+// Draw chart
+for (var i = 0; i < data.length; i++) {
+	var sliceAngle = 2 * Math.PI * data[i] / total;
+
+	// Draw outer slice
+	context.fillStyle = colors[i];
+	context.beginPath();
+	context.moveTo(center.x, center.y);
+	context.arc(center.x, center.y, chartRadius, startAngle, startAngle + sliceAngle);
+	context.closePath();
+	context.fill();
+
+	// Draw inner slice
+	context.fillStyle = "#ffffff";
+	context.beginPath();
+	context.moveTo(center.x, center.y);
+	context.arc(center.x, center.y, chartRadius / 2, startAngle, startAngle + sliceAngle);
+	context.closePath();
+	context.fill();
+
+	// Add label to legend
+	var listItem = document.createElement("li");
+	var colorBox = document.createElement("span");
+	colorBox.style.backgroundColor = colors[i];
+	listItem.appendChild(colorBox);
+	listItem.appendChild(document.createTextNode(labels[i] + " (" + colors[i] + ")"));
+	legend.appendChild(listItem);
+
+	startAngle += sliceAngle;
+}
+
+// Position legend
+var legendTop = center.y - (legend.offsetHeight / 2);
+legend.style.top = legendTop + "px"; }
+</script> 
+	</body>
+</html>

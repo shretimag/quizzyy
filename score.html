@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="scores.css">
+</head>
+<body>
+    
+    <div class="heading">
+    <p>ANSWERS</p></div><br>
+    <div id="scoree" class="scoreeans"></div><br>
+    <button class="buttonscore"><a href=scoreboard.html>See Scoreboard</a></button><br>
+    <button class="buttonscore" type="submit" onclick="logout()">Logout</button><br>
+    <button class="buttonscore"><a href= "homepage.html">Make Another Quiz</button>
+    
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+    
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDjxpbAlo9Qu2aN2sTiWPzOkl_AbBmFgX0",
+  authDomain: "sample-f74a3.firebaseapp.com",
+  databaseURL: "https://sample-f74a3-default-rtdb.firebaseio.com",
+  projectId: "sample-f74a3",
+  storageBucket: "sample-f74a3.appspot.com",
+  messagingSenderId: "73794391459",
+  appId: "1:73794391459:web:2858929dc11882654d1e16"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        const colRef = collection(db, 'quiz');
+        const rowRef = collection(db, 'score')
+        var book=[];
+        getDocs(colRef)
+    .then((snapshot) => {
+
+        snapshot.docs.forEach((doc) => {
+            book.push({ ...doc.data(), id: doc.id })
+        })
+        console.log(book)
+        const html = book.map(user => {
+            return `<li>question: ${user.question}  answer: ${user.answer} </li>`
+        })
+        .join('');
+        console.log(html)
+
+    
+        document.getElementById('scoree').innerHTML = html;
+    }
+    )
+
+</script>
+ <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+
+ <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+<script src="homepage.js"></script>
+    </body></html>

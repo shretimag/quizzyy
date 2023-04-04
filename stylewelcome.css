@@ -1,0 +1,51 @@
+body {
+	background: #090c11;
+}
+
+svg {
+	font-family: 'Russo One', sans-serif;
+	position: absolute; 
+	width: 100%; height: 100%;
+    bottom: 40px;
+}
+svg text {
+	text-transform: uppercase;
+	animation: stroke 5s ;
+	stroke-width: 2;
+	stroke: white;
+	font-size: 100px;
+}
+.btn{
+    position: absolute;
+    align-items: center;
+    top: 450px;
+    left: 650px;
+    width: 200px;
+    height: 80px;
+    outline: rgba(72,138,204,1);
+    border-color: rgba(72,138,204,1);
+    border-radius: 49px;
+    background-color: #090c11;
+    color: #fff;
+    font-weight: 600;
+    text-transform: capitalize;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.btn:hover{
+
+    background-color: #495c81;
+}
+@keyframes stroke {
+	0%   {
+		fill: rgba(72,138,20,0); stroke: white;
+		stroke-dashoffset: 25%; stroke-dasharray: 0 50%; stroke-width: 2;
+	}
+	70%  {fill: rgba(72,138,20,0); stroke: white; }
+	80%  {fill: rgba(72,138,20,0); stroke: white; stroke-width: 3; }
+	100% {
+		fill: rgba(72,138,204,1); stroke: rgba(54,95,160,0); 
+		stroke-dashoffset: -25%; stroke-dasharray: 50% 0; stroke-width: 0;
+	}
+}

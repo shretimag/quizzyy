@@ -1,0 +1,117 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Quiz</title>
+		<link rel="stylesheet" href="scores.css">
+	</head>
+<body>
+    
+    <div class="heading">
+    <p>SCOREBOARD</p></div><br>
+        <div id="scoree" class="scoree"></div>
+        <div class="scoreeb"><canvas id="myCanvas"></canvas><br></div>
+    <button class="buttonscore"><a href=score.html>See Answers</a></button><br>
+    <button class="buttonscore" type="submit" onclick="logout()">Logout</button><br>
+    <button class="buttonscore"><a href= "homepage.html">Make Another Quiz</button>
+
+
+			
+		
+<script type="module">
+			// Import the functions you need from the SDKs you need
+			import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+			import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+			// TODO: Add SDKs for Firebase products that you want to use
+			// https://firebase.google.com/docs/web/setup#available-libraries
+		
+			// Your web app's Firebase configuration
+			const firebaseConfig = {
+				apiKey: "AIzaSyDjxpbAlo9Qu2aN2sTiWPzOkl_AbBmFgX0",
+      authDomain: "sample-f74a3.firebaseapp.com",
+      databaseURL: "https://sample-f74a3-default-rtdb.firebaseio.com",
+      projectId: "sample-f74a3",
+      storageBucket: "sample-f74a3.appspot.com",
+      messagingSenderId: "73794391459",
+      appId: "1:73794391459:web:2858929dc11882654d1e16"
+			};
+		
+			// Initialize Firebase
+			const app = initializeApp(firebaseConfig);
+			const db = getFirestore();
+			const colRef = collection(db, 'quiz');
+			const rowRef = collection(db, 'score')
+            var book=[];
+            var datascore=[];
+            var dataname = [];
+            getDocs(rowRef)
+        .then((snapshot) => {
+
+            snapshot.docs.forEach((doc) => {
+                book.push({ ...doc.data(), id: doc.id })
+            })
+            console.log(book)
+            const html = book.map(user => {
+                return `<li>name: ${user.name} <br> score: ${user.value} </li>`
+            })
+            .join('');
+            console.log(html)
+            
+
+        
+            document.getElementById('scoree').innerHTML = html;
+            var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+
+// Define data for the horizontal bar graph
+
+
+// Set up variables for the graph dimensions
+var barHeight = 100/book.length;
+var barSpacing = 1;
+var graphHeight = 250;
+var graphWidth = 400;
+var startX = 100;
+var startY = (300 - graphHeight) / 2;
+ctx.font= "16px Ariel"
+// Draw the x-axis grid lines and values
+ctx.beginPath();
+ctx.strokeStyle = "#bbb";
+for (var i = 0; i <= 10; i++) {
+  var x = startX + i * (graphWidth / 10);
+  ctx.moveTo(x, startY);
+  ctx.lineTo(x, 300 - startY);
+  ctx.stroke();
+  ctx.fillStyle = "#000";
+  ctx.fillText(i * 10, x -10, 300 - startY +20);
+}
+
+// Draw the y-axis labels and bars
+for (var i = 0; i < book.length; i++) {
+  var barWidth = book[i].value * graphWidth*10 / 100;
+  ctx.fillStyle = "black";
+  ctx.fillRect(startX, startY + i * (barHeight + barSpacing), barWidth, barHeight);
+  ctx.fillStyle = "black";
+  ctx.fillText(book[i].name, startX -80, startY + i * (barHeight + barSpacing)+5 + barHeight / 2);
+}
+
+
+            
+        }
+        )
+    
+</script>
+
+
+ The core Firebase JS SDK is always required and must be listed first
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+
+ <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+<script src="homepage.js"></script>
+        </body></html>

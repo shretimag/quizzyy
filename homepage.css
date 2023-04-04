@@ -1,0 +1,39 @@
+body{
+  background-color: lightblue;
+  border-color: white;
+  
+}
+.btn-outline-success:hover{
+  background-color: lightblue;
+}
+.btn-outline-success{
+  color: black;
+  border-color: black;
+}
+.card:hover{
+  transform: scale(1.1);
+}
+.container{
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center; 
+  margin: 10px;
+  
+}
+.img{
+  size: 60px;
+}
+.card{
+  margin: 10px;
+  margin-top: 50px;
+  transition: 1s;
+  width: 500px;
+  height: 200px;
+  
+}
+.head{
+  font-size: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}

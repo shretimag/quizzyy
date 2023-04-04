@@ -1,0 +1,116 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making A Quiz</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <form class="add" id="form1"  >
+    <div class="container1">
+        <div class="container2">
+            <div class="form-body">
+                <div class="row">
+                    <div class="form-holder">
+                        <div class="form-content" id="form-items">
+                            <div class="form-items">
+                                
+                                
+                                    <h3>Input Your Questions!</h3>
+                                    <div id="booklist">
+                                        <label for="question">QUESTION</label><br>
+                                        <input type="text" id="questionss" class="input-field" placeholder="question"required><br>
+                                        <label for="options">OPTIONS</label>
+                                        <input class="input-field" type="text" id="option1" placeholder="option" required><br>
+                                        <input class="input-field" type="text" id="option2" placeholder="option" required><br>
+                                        <input class="input-field" type="text" id="option3" placeholder="option" required><br>
+                                        <input class="input-field" type="text" id="option4" placeholder="option" required><br>
+                                        <label for="options">ANSWER</label>
+                                        <input class="input-field" type="text" id="answer" placeholder="answer" required><br>
+                                    </div>
+                                    
+                                    <div id="clicks" class="id">0</div>
+                                    <button class="btn" onclick="clickFunc()" id="btntn">NEXT QUESTION</button>
+                                    <button class="quizgo" id="quizgo"><a href="quiz.html">GO TO QUIZ</a></btn>
+                                    <button class="quizgo" onclick="logout()">LOGOUT</a></btn>
+                                
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</form>
+<script type="module">import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js"
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+    
+    // Your web app's Firebase configuration
+    import{
+        getFirestore, collection, getDocs,
+        addDoc, deleteDoc, doc, getDoc, setDoc 
+       //getFirestore, doc, setDoc, getDoc, collection, addDoc, updateDoc,deleteDoc, deleteField
+    } from 'https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js'
+    const firebaseConfig = {
+      apiKey: "AIzaSyDjxpbAlo9Qu2aN2sTiWPzOkl_AbBmFgX0",
+      authDomain: "sample-f74a3.firebaseapp.com",
+      databaseURL: "https://sample-f74a3-default-rtdb.firebaseio.com",
+      projectId: "sample-f74a3",
+      storageBucket: "sample-f74a3.appspot.com",
+      messagingSenderId: "73794391459",
+      appId: "1:73794391459:web:2858929dc11882654d1e16"
+    }
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig)
+    
+    const db= getFirestore()
+    const colRef = collection(db, 'quiz')
+      
+    getDocs(colRef)
+
+     .then((snapshot)=> {
+        let quiz= []
+        snapshot.docs.forEach((doc)=> {
+            quiz.push({...doc.data(), id: doc.id})
+        })
+        console.log(quiz)
+    })
+     .catch(err=>{
+        console.log(err.message)
+     })
+
+     const addBookForm = document.querySelector('.add')
+     addBookForm.addEventListener('submit', (e) =>{
+        e.preventDefault()
+        addDoc(colRef, {
+            question: addBookForm.questionss.value,
+            option1: addBookForm.option1.value,
+            option2: addBookForm.option2.value,
+            option3: addBookForm.option3.value,
+            option4: addBookForm.option4.value,
+            answer: addBookForm.answer.value,
+        })
+        .then(()=>{
+            addBookForm.reset()
+        })
+     })
+    
+</script>
+    <script src="index2.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+
+ <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+<script src="firebase.js"></script>
+<script src="homepage.js"></script>
+</html>
+</body>
+</html>  
